@@ -82,7 +82,7 @@ async function onSubmit(e) {
        
         lightbox.refresh();
 
-        if (!requestApi.isShowLoadMore) { 
+        if (requestApi.isShowLoadMore) { 
             refs.buttonLoad.classList.remove(`is-hidden`) 
 
         //     const target = document.querySelector(`.photo-card:last-child`);
