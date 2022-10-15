@@ -11,45 +11,46 @@ const requestApi = new RequestApi;
 const lightbox = new SimpleLightbox('.largeImage');
 
 // бесконечный скролл
-const options = {
-    root: document.querySelector('#scrollArea'),
-    rootMargin: '100px',
-    threshold: 1.0
-}
-const callback = async function(entries, observer) {
-    entries.forEach(async entry => {
+
+// const options = {
+//     root: document.querySelector('#scrollArea'),
+//     rootMargin: '100px',
+//     threshold: 1.0
+// }
+// const callback = async function(entries, observer) {
+//     entries.forEach(async entry => {
          
-        if (entry.isIntersecting && entry.intersectionRect.bottom > 1100) {
-            console.log(entry.intersectionRect);
+//         if (entry.isIntersecting && entry.intersectionRect.bottom > 1100) {
+//             console.log(entry.intersectionRect);
 
-            requestApi.incrementPage();
-            observer.unobserve(entry.target);
+//             requestApi.incrementPage();
+//             observer.unobserve(entry.target);
             
-             try {
-        const data = await requestApi.getPhoto();
+//              try {
+//         const data = await requestApi.getPhoto();
 
-        galleryMarkup(data.hits);
+//         galleryMarkup(data.hits);
 
-        lightbox.refresh();
+//         lightbox.refresh();
                  
-        if (requestApi.isShowLoadMore) {
+//         if (requestApi.isShowLoadMore) {
         
-         const target = document.querySelector(`.photo-card:last-child`);
+//          const target = document.querySelector(`.photo-card:last-child`);
         
-        io.observe(target);
-        }  
+//         io.observe(target);
+//         }  
 
-         } catch (error) {
-         console.log(error);
-            clearPage();
-        Notify.failure(`Sorry, something went wrong`);
+//          } catch (error) {
+//          console.log(error);
+//             clearPage();
+//         Notify.failure(`Sorry, something went wrong`);
         
-        }
-       }   
-    });
-};
+//         }
+//        }   
+//     });
+// };
 
-const io = new IntersectionObserver(callback, options);
+// const io = new IntersectionObserver(callback, options);
 
 
 refs.form.addEventListener(`submit`, onSubmit);
@@ -82,11 +83,11 @@ async function onSubmit(e) {
         lightbox.refresh();
 
         if (requestApi.isShowLoadMore) { 
-            // refs.buttonLoad.classList.remove(`is-hidden`) 
+            refs.buttonLoad.classList.remove(`is-hidden`) 
 
-            const target = document.querySelector(`.photo-card:last-child`);
+        //     const target = document.querySelector(`.photo-card:last-child`);
         
-        io.observe(target);
+        // io.observe(target);
         }
         
     } catch (error) {
@@ -94,44 +95,43 @@ async function onSubmit(e) {
             clearPage();
             Notify.failure(`Sorry, something went wrong`);
     }
-    // остановка спинера для версии с кнопкой
 
-    // finally {
-    //     spinnerStop();
-    // }       
+    finally {
+        spinnerStop();
+    }       
 }
 
 
-//ВЕРСИЯ С КНОПКОЙ
 
-// refs.buttonLoad.addEventListener(`click`, onButtonLoad);
 
-// async function onButtonLoad(e) {
-//     requestApi.incrementPage();
+refs.buttonLoad.addEventListener(`click`, onButtonLoad);
 
-//     spinnerStart();
+async function onButtonLoad(e) {
+    requestApi.incrementPage();
+
+    spinnerStart();
      
-//     // if (!requestApi.isShowLoadMore) {
-//     //     refs.buttonLoad.classList.add(`is-hidden`);
-//     //     Notify.info("We're sorry, but you've reached the end of search results.");
-//     // }
+    if (!requestApi.isShowLoadMore) {
+        refs.buttonLoad.classList.add(`is-hidden`);
+        Notify.info("We're sorry, but you've reached the end of search results.");
+    }
     
-//     try {
-//         const data = await requestApi.getPhoto();
+    try {
+        const data = await requestApi.getPhoto();
 
-//         galleryMarkup(data.hits);
+        galleryMarkup(data.hits);
 
-//         lightbox.refresh();
+        lightbox.refresh();
 
-//     } catch (error) {
-//          console.log(error);
-//             clearPage();
-//         Notify.failure(`Sorry, something went wrong`);
+    } catch (error) {
+         console.log(error);
+            clearPage();
+        Notify.failure(`Sorry, something went wrong`);
         
-//     } finally {
-//         spinnerStop();
-//     }
-// }
+    } finally {
+        spinnerStop();
+    }
+}
 
 function clearPage() {
     requestApi.resetPage();
