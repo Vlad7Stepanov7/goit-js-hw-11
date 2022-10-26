@@ -80,6 +80,8 @@ async function onSubmit(e) {
 
         galleryMarkup(data.hits);
        
+        smoothScroll();
+        
         lightbox.refresh();
 
         if (requestApi.isShowLoadMore) { 
@@ -121,6 +123,8 @@ async function onButtonLoad(e) {
 
         galleryMarkup(data.hits);
 
+        smoothScroll();
+
         lightbox.refresh();
 
     } catch (error) {
@@ -139,3 +143,13 @@ function clearPage() {
     refs.buttonLoad.classList.add(`is-hidden`)
 }
 
+function smoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+}
