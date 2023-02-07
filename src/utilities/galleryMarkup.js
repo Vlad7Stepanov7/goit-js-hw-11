@@ -8,7 +8,7 @@ export function galleryMarkup(images) {
         return `
 <div class="photo-card">
  <a class="largeImage" href="${largeImageURL}">
-    <img src="${webformatURL}" alt="t${tags}" loading="lazy" width="600" height="400"/>
+    <img src="${webformatURL}" alt="${tags}" loading="lazy" width="600" height="400"/>
     </a>
     <div class="info">
         <p class="info-item">
